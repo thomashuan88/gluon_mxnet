@@ -22,52 +22,156 @@ x = nd.arange(12)
 x
 ```
 
+```{.json .output n=2}
+[
+ {
+  "data": {
+   "text/plain": "\n[ 0.  1.  2.  3.  4.  5.  6.  7.  8.  9. 10. 11.]\n<NDArray 12 @cpu(0)>"
+  },
+  "execution_count": 2,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
+```
+
 这时返回了一个`NDArray`实例，其中包含了从0开始的12个连续整数。从打印`x`时显示的属性`<NDArray 12 @cpu(0)>`可以看出，它是长度为12的一维数组，且被创建在CPU使用的内存上。其中“@cpu(0)”里的0没有特别的意义，并不代表特定的核。
 
 我们可以通过`shape`属性来获取`NDArray`实例的形状。
 
-```{.python .input  n=8}
+```{.python .input  n=3}
 x.shape
+```
+
+```{.json .output n=3}
+[
+ {
+  "data": {
+   "text/plain": "(12,)"
+  },
+  "execution_count": 3,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 我们也能够通过`size`属性得到`NDArray`实例中元素（element）的总数。
 
-```{.python .input  n=9}
+```{.python .input  n=4}
 x.size
+```
+
+```{.json .output n=4}
+[
+ {
+  "data": {
+   "text/plain": "12"
+  },
+  "execution_count": 4,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 下面使用`reshape`函数把行向量`x`的形状改为(3, 4)，也就是一个3行4列的矩阵，并记作`X`。除了形状改变之外，`X`中的元素保持不变。
 
-```{.python .input  n=3}
+```{.python .input  n=5}
 X = x.reshape((3, 4))
 X
+```
+
+```{.json .output n=5}
+[
+ {
+  "data": {
+   "text/plain": "\n[[ 0.  1.  2.  3.]\n [ 4.  5.  6.  7.]\n [ 8.  9. 10. 11.]]\n<NDArray 3x4 @cpu(0)>"
+  },
+  "execution_count": 5,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 注意`X`属性中的形状发生了变化。上面`x.reshape((3, 4))`也可写成`x.reshape((-1, 4))`或`x.reshape((3, -1))`。由于`x`的元素个数是已知的，这里的`-1`是能够通过元素个数和其他维度的大小推断出来的。
 
 接下来，我们创建一个各元素为0，形状为(2, 3, 4)的张量。实际上，之前创建的向量和矩阵都是特殊的张量。
 
-```{.python .input  n=4}
+```{.python .input  n=6}
 nd.zeros((2, 3, 4))
+```
+
+```{.json .output n=6}
+[
+ {
+  "data": {
+   "text/plain": "\n[[[0. 0. 0. 0.]\n  [0. 0. 0. 0.]\n  [0. 0. 0. 0.]]\n\n [[0. 0. 0. 0.]\n  [0. 0. 0. 0.]\n  [0. 0. 0. 0.]]]\n<NDArray 2x3x4 @cpu(0)>"
+  },
+  "execution_count": 6,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 类似地，我们可以创建各元素为1的张量。
 
-```{.python .input  n=5}
+```{.python .input  n=7}
 nd.ones((3, 4))
+```
+
+```{.json .output n=7}
+[
+ {
+  "data": {
+   "text/plain": "\n[[1. 1. 1. 1.]\n [1. 1. 1. 1.]\n [1. 1. 1. 1.]]\n<NDArray 3x4 @cpu(0)>"
+  },
+  "execution_count": 7,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 我们也可以通过Python的列表（list）指定需要创建的`NDArray`中每个元素的值。
 
-```{.python .input  n=6}
+```{.python .input  n=8}
 Y = nd.array([[2, 1, 4, 3], [1, 2, 3, 4], [4, 3, 2, 1]])
 Y
 ```
 
+```{.json .output n=8}
+[
+ {
+  "data": {
+   "text/plain": "\n[[2. 1. 4. 3.]\n [1. 2. 3. 4.]\n [4. 3. 2. 1.]]\n<NDArray 3x4 @cpu(0)>"
+  },
+  "execution_count": 8,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
+```
+
 有些情况下，我们需要随机生成`NDArray`中每个元素的值。下面我们创建一个形状为(3, 4)的`NDArray`。它的每个元素都随机采样于均值为0、标准差为1的正态分布。
 
-```{.python .input  n=7}
+```{.python .input  n=9}
 nd.random.normal(0, 1, shape=(3, 4))
+```
+
+```{.json .output n=9}
+[
+ {
+  "data": {
+   "text/plain": "\n[[ 1.1630785   0.4838046   0.29956347  0.15302546]\n [-1.1688148   1.558071   -0.5459446  -2.3556297 ]\n [ 0.54144025  2.6785064   1.2546344  -0.54877406]]\n<NDArray 3x4 @cpu(0)>"
+  },
+  "execution_count": 9,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 ## 运算
@@ -78,52 +182,186 @@ nd.random.normal(0, 1, shape=(3, 4))
 X + Y
 ```
 
+```{.json .output n=10}
+[
+ {
+  "data": {
+   "text/plain": "\n[[ 2.  2.  6.  6.]\n [ 5.  7.  9. 11.]\n [12. 12. 12. 12.]]\n<NDArray 3x4 @cpu(0)>"
+  },
+  "execution_count": 10,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
+```
+
 按元素乘法：
 
 ```{.python .input  n=11}
 X * Y
 ```
 
+```{.json .output n=11}
+[
+ {
+  "data": {
+   "text/plain": "\n[[ 0.  1.  8.  9.]\n [ 4. 10. 18. 28.]\n [32. 27. 20. 11.]]\n<NDArray 3x4 @cpu(0)>"
+  },
+  "execution_count": 11,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
+```
+
 按元素除法：
 
-```{.python .input}
+```{.python .input  n=12}
 X / Y
+```
+
+```{.json .output n=12}
+[
+ {
+  "data": {
+   "text/plain": "\n[[ 0.    1.    0.5   1.  ]\n [ 4.    2.5   2.    1.75]\n [ 2.    3.    5.   11.  ]]\n<NDArray 3x4 @cpu(0)>"
+  },
+  "execution_count": 12,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 按元素做指数运算：
 
-```{.python .input  n=12}
+```{.python .input  n=13}
 Y.exp()
+```
+
+```{.json .output n=13}
+[
+ {
+  "data": {
+   "text/plain": "\n[[ 7.389056   2.7182817 54.59815   20.085537 ]\n [ 2.7182817  7.389056  20.085537  54.59815  ]\n [54.59815   20.085537   7.389056   2.7182817]]\n<NDArray 3x4 @cpu(0)>"
+  },
+  "execution_count": 13,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 除了按元素计算外，我们还可以使用`dot`函数做矩阵乘法。下面将`X`与`Y`的转置做矩阵乘法。由于`X`是3行4列的矩阵，`Y`转置为4行3列的矩阵，因此两个矩阵相乘得到3行3列的矩阵。
 
-```{.python .input  n=13}
+```{.python .input  n=14}
 nd.dot(X, Y.T)
+```
+
+```{.json .output n=14}
+[
+ {
+  "data": {
+   "text/plain": "\n[[ 18.  20.  10.]\n [ 58.  60.  50.]\n [ 98. 100.  90.]]\n<NDArray 3x3 @cpu(0)>"
+  },
+  "execution_count": 14,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 我们也可以将多个`NDArray`连结（concatenate）。下面分别在行上（维度0，即形状中的最左边元素）和列上（维度1，即形状中左起第二个元素）连结两个矩阵。可以看到，输出的第一个`NDArray`在维度0的长度（$6$）为两个输入矩阵在维度0的长度之和（$3+3$），而输出的第二个`NDArray`在维度1的长度（$8$）为两个输入矩阵在维度1的长度之和（$4+4$）。
 
-```{.python .input}
+```{.python .input  n=16}
 nd.concat(X, Y, dim=0), nd.concat(X, Y, dim=1)
+```
+
+```{.json .output n=16}
+[
+ {
+  "data": {
+   "text/plain": "(\n [[ 0.  1.  2.  3.]\n  [ 4.  5.  6.  7.]\n  [ 8.  9. 10. 11.]\n  [ 2.  1.  4.  3.]\n  [ 1.  2.  3.  4.]\n  [ 4.  3.  2.  1.]]\n <NDArray 6x4 @cpu(0)>, \n [[ 0.  1.  2.  3.  2.  1.  4.  3.]\n  [ 4.  5.  6.  7.  1.  2.  3.  4.]\n  [ 8.  9. 10. 11.  4.  3.  2.  1.]]\n <NDArray 3x8 @cpu(0)>)"
+  },
+  "execution_count": 16,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 使用条件判断式可以得到元素为0或1的新的`NDArray`。以`X == Y`为例，如果`X`和`Y`在相同位置的条件判断为真（值相等），那么新的`NDArray`在相同位置的值为1；反之为0。
 
-```{.python .input}
+```{.python .input  n=17}
 X == Y
+```
+
+```{.json .output n=17}
+[
+ {
+  "data": {
+   "text/plain": "\n[[0. 1. 0. 1.]\n [0. 0. 0. 0.]\n [0. 0. 0. 0.]]\n<NDArray 3x4 @cpu(0)>"
+  },
+  "execution_count": 17,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 对`NDArray`中的所有元素求和得到只有一个元素的`NDArray`。
 
-```{.python .input}
+```{.python .input  n=18}
 X.sum()
+```
+
+```{.json .output n=18}
+[
+ {
+  "data": {
+   "text/plain": "\n[66.]\n<NDArray 1 @cpu(0)>"
+  },
+  "execution_count": 18,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
+```
+
+```{.python .input  n=21}
+X
+```
+
+```{.json .output n=21}
+[
+ {
+  "data": {
+   "text/plain": "\n[[ 0.  1.  2.  3.]\n [ 4.  5.  6.  7.]\n [ 8.  9. 10. 11.]]\n<NDArray 3x4 @cpu(0)>"
+  },
+  "execution_count": 21,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 我们可以通过`asscalar`函数将结果变换为Python中的标量。下面例子中`X`的$L_2$范数结果同上例一样是单元素`NDArray`，但最后结果变换成了Python中的标量。
 
-```{.python .input}
+```{.python .input  n=19}
 X.norm().asscalar()
+```
+
+```{.json .output n=19}
+[
+ {
+  "data": {
+   "text/plain": "22.494442"
+  },
+  "execution_count": 19,
+  "metadata": {},
+  "output_type": "execute_result"
+ }
+]
 ```
 
 我们也可以把`Y.exp()`、`X.sum()`、`X.norm()`等分别改写为`nd.exp(Y)`、`nd.sum(X)`、`nd.norm(X)`等。
